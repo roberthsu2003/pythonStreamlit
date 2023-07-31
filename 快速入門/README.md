@@ -15,3 +15,59 @@
 如果要執行大量的資料,要使用@st.cache_data decorator, 以便app有更好的執行效能。
 
 ### 畫面的顯示和資料的修飾
+#### 神奇的st.write()
+- 文字
+- 圖片
+- 表格
+- DataFrame
+- list
+
+#### 範例1:顯示DataFrame
+
+```python
+# 當輸出df變數時,st.write()會自動執行
+"""
+# My first app
+Here's our first attempt at using data to create a table:
+"""
+
+import streamlit as st
+import pandas as pd
+df = pd.DataFrame({
+  'first column': [1, 2, 3, 4],
+  'second column': [10, 20, 30, 40]
+})
+
+df
+```
+
+![](./images/pic1.png)
+
+```python
+# 也可以使用st.write(df)
+import streamlit as st
+import pandas as pd
+
+st.write("Here's our first attempt at using data to create a table:")
+st.write(pd.DataFrame({
+    'first column': [1, 2, 3, 4],
+    'second column': [10, 20, 30, 40]
+}))
+```
+
+#### 範例2:
+- 使用st.dataframe(),顯示Styler
+
+```python
+import streamlit as st
+import numpy as np
+import pandas as pd
+
+dataframe = pd.DataFrame(
+    np.random.randn(10, 20),
+    columns=('col %d' % i for i in range(20)))
+
+st.dataframe(dataframe.style.highlight_max(axis=0))
+```
+
+![](./images/pic2.png)
