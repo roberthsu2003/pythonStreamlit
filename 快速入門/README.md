@@ -71,3 +71,44 @@ st.dataframe(dataframe.style.highlight_max(axis=0))
 ```
 
 ![](./images/pic2.png)
+
+### 圖表和地圖
+
+#### 範例3:線圖
+- st.line_chart()
+
+```python
+import streamlit as st
+import numpy as np
+import pandas as pd
+
+chart_data = pd.DataFrame(
+     np.random.randn(20, 3),
+     columns=['a', 'b', 'c'])
+
+st.line_chart(chart_data)
+```
+
+![](./images/pic3.png)
+
+#### 範例4:地圖
+
+```python
+import streamlit as st
+import numpy as np
+import pandas as pd
+
+map_data = pd.DataFrame(
+    np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
+    columns=['lat', 'lon'])
+
+st.map(map_data)
+```
+
+![](./images/pic4.png)
+
+### Widgets(互動工具)
+
+```python
+
+```
