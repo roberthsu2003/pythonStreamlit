@@ -108,7 +108,148 @@ st.map(map_data)
 ![](./images/pic4.png)
 
 ### Widgets(互動工具)
+- st.slider()
+- st.button()
+- st.selectbox()
+
+#### 範例5 slider
 
 ```python
+import streamlit as st
+x = st.slider('x')  # 👈 this is a widget
+st.write(x, 'squared is', x * x)
+```
+
+![](./images/pic5.png)
+
+#### widgets工具內的key
+- ##### 非常重要的觀念
+- key會被儲存在st.session_state內
+- 當程式重新由上往下讀(觸發事件),所有資料將被清除,除了st.session_state
+
+#### 範例6 widget的key屬性
+
+```python
+import streamlit as st
+st.text_input("Your name", key="name")
+
+# You can access the value at any point with:
+st.session_state.name
+```
+
+![](./images/pic6.png)
+
+#### checkbox() 顯示/隱藏 資料
+#### 範例7
+
+```python
+import streamlit as st
+import numpy as np
+import pandas as pd
+
+if st.checkbox('Show dataframe'):
+    chart_data = pd.DataFrame(
+       np.random.randn(20, 3),
+       columns=['a', 'b', 'c'])
+
+    chart_data
+```
+
+![](./images/pic7.png)
+
+#### selectbox 選擇資料
+#### 範例8
+
+```python
+import streamlit as st
+import pandas as pd
+
+df = pd.DataFrame({
+    'first column': [1, 2, 3, 4],
+    'second column': [10, 20, 30, 40]
+    })
+
+option = st.selectbox(
+    'Which number do you like best?',
+     df['first column'])
+
+'You selected: ', option
+```
+
+![](./images/pic8.png)
+
+### 版面
+- sliderbar
+- columns
+- expander
+
+#### sliderbar
+#### 範例9
+
+```python
+import streamlit as st
+
+# Add a selectbox to the sidebar:
+add_selectbox = st.sidebar.selectbox(
+    'How would you like to be contacted?',
+    ('Email', 'Home phone', 'Mobile phone')
+)
+
+# Add a slider to the sidebar:
+add_slider = st.sidebar.slider(
+    'Select a range of values',
+    0.0, 100.0, (25.0, 75.0)
+)
+```
+
+![](./images/pic9.png)
+
+#### columns
+
+#### 範例10
 
 ```
+import streamlit as st
+
+left_column, right_column = st.columns(2)
+# You can use a column just like st.sidebar:
+left_column.button('Press me!')
+
+# Or even better, call Streamlit functions inside a "with" block:
+with right_column:
+    chosen = st.radio(
+        'Sorting hat',
+        ("Gryffindor", "Ravenclaw", "Hufflepuff", "Slytherin"))
+    st.write(f"You are in {chosen} house!")
+```
+
+![](./images/pic10.png)
+
+#### progress(進度)
+
+#### 範例11
+
+```
+import streamlit as st
+import time
+
+'Starting a long computation...'
+
+# Add a placeholder
+latest_iteration = st.empty()
+bar = st.progress(0)
+
+for i in range(100):
+  # Update the progress bar with each iteration.
+  latest_iteration.text(f'Iteration {i+1}')
+  bar.progress(i + 1)
+  time.sleep(0.1)
+
+'...and now we\'re done!'
+```
+
+![](./images/pic11.png)
+
+## Caching
+## Pages
+## App model
