@@ -53,7 +53,17 @@ download_save_file(url)
 st.write(f'台灣銀行牌告匯率 {get_today()}')
 df = rates_dataFrame()
 st.write(df.T)
-       
+
+#sidebar
+add_radio = st.sidebar.radio(
+    "試算方式:",
+    ("買入","買出")
+)
+
+add_selectbox = st.sidebar.selectbox(
+    "請選擇貨幣:",
+    df.index
+)
     
 
 
