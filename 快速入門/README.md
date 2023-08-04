@@ -251,5 +251,9 @@ for i in range(100):
 ![](./images/pic11.png)
 
 ## Caching
+- ### 解決重覆執行的效能問題
+	- 會花費長時間的自訂function,傳出的資料確是相同的
+### 說明:https://docs.streamlit.io/library/advanced-features/caching
+
 ## Pages
 ## App model
