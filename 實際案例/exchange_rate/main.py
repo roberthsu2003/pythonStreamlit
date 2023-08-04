@@ -27,7 +27,7 @@ def get_csv_filePath() -> str:
     file_absname = f'{os.path.dirname(__file__)}/rates_data/{file_name}'
     return file_absname
 
-def download_save_file(url)->None:
+def download_save_file(url:str)->None:
     file_path = get_csv_filePath()
     if not os.path.exists(file_path):
         #沒有這個檔案
@@ -44,6 +44,16 @@ def rates_dataFrame() -> pd.DataFrame:
     right_df = df[['匯率','匯率.1']]
     right_df.columns = ['買進','賣出']
     return right_df
+
+@st.cache_data
+def get_rate(df:pd.DataFrame) -> pd.Series:
+    list_s = pd.Series({'USD':'美金','HKD':'港幣','GBP':'英鎊','CAD':'加拿大幣',
+     'SGD':'新加坡幣','CHF':'瑞士法郎','JPY':'日圓','ZAR':'南非幣',
+     'SEK':'瑞典幣','NDZ':'紐元','THB':'泰幣','PHP':'菲國比索','IDR':'印尼幣',
+     'EUR':'歐元','KRW':'韓元','VND':'越南盾','MYR':'馬來幣','CNY':'人民幣'
+     })
+    
+    return list_s.apply(lambda val: val+ list_s[list_s == val].index[0])
     
  
 
@@ -55,15 +65,40 @@ df = rates_dataFrame()
 st.write(df.T)
 
 #sidebar
+st.sidebar.title("台幣匯率換算")
+st.sidebar.divider()
 add_radio = st.sidebar.radio(
     "試算方式:",
-    ("買入","買出")
+    ("買入","賣出")
 )
+
+st.sidebar.divider()
 
 add_selectbox = st.sidebar.selectbox(
     "請選擇貨幣:",
-    df.index
+    get_rate(df)
 )
+st.sidebar.divider()
+if add_radio == '買入':
+    st.sidebar.write('買入'+add_selectbox[-3:])
+    num = st.sidebar.number_input("",0)
+    nt_dallar = df['賣出'][add_selectbox[-3:]] * num
+    st.sidebar.write(f'買入{add_selectbox[-3:]}需要{round(nt_dallar,ndigits=2)}台幣')
+else:
+    st.sidebar.write('賣出'+add_selectbox[-3:])
+    num = st.sidebar.number_input("",0)
+    nt_dallar = df['買進'][add_selectbox[-3:]] * num
+    st.sidebar.write(f'賣出{add_selectbox[-3:]}可得{round(nt_dallar,ndigits=2)}台幣')
+
+print(df)
+
+
+
+
+
+
+
+
     
 
 
