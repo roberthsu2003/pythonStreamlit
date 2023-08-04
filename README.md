@@ -20,3 +20,5 @@ $ streamlit run https://raw.githubusercontent.com/streamlit/demo-uber-nyc-pickup
 ```
 
 ## [快速入門](./快速入門/)
+## 實際案例
+- [台幣匯率換算](./實際案例/exchange_rate)
