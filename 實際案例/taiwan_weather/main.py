@@ -82,7 +82,7 @@ st.dataframe(
     dataframe.style\
     .highlight_max(axis=0,subset=['最高溫度'],color='red')\
     .highlight_min(axis=0,color='lightblue',subset=['最低溫度'])
-    ,width=600,height=400)
+    ,width=600,height=900)
 
 dataframe = dataframe.set_index('城市')
 st.line_chart(dataframe[['最高溫度','最低溫度']])
