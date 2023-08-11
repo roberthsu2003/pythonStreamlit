@@ -22,3 +22,5 @@ $ streamlit run https://raw.githubusercontent.com/streamlit/demo-uber-nyc-pickup
 ## [快速入門](./快速入門/)
 ## 實際案例
 - [台幣匯率換算](./實際案例/exchange_rate)
+- [台灣天氣預測](./實際案例/taiwan_weather)
+- [股票資訊](./實體案例/yahoo_finance)
