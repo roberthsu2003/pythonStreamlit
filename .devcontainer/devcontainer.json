@@ -22,7 +22,14 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	 "postCreateCommand": 
-		"pip install --upgrade pip && pip3 install --user -r requirements.txt"
+		"pip install --upgrade pip && pip3 install --user -r requirements.txt && sudo apt-get update -y && sudo apt-get install -y fonts-wqy-zenhei",
+		"customizations": {
+			"vscode": {
+				"extensions": [
+					"ms-toolsai.jupyter"
+				]
+			}
+		}
 
 	// Configure tool-specific properties.
 	// "customizations": {},
