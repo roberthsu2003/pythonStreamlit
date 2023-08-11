@@ -56,17 +56,21 @@ def getFigures(dataFrame:pd.DataFrame)->plt.figure:
 
     return fig
 
-
+#========streamlit dataFrame===========
 dataFrame = getDataFrame()
+st.subheader('streamlit dataframe')
 st.dataframe(dataFrame.style)
-figure = getFigures(dataFrame)
 
+#========streamlit lineChart===========
+st.subheader('streamlit line_chart')
 st.line_chart(dataFrame.T)
 
-#matplotlib figure
+#========matplotlib figure===========
+st.subheader('martplotlib')
+figure = getFigures(dataFrame)
 st.pyplot(figure)
 
-#plotly's express
+#============= plotly's express =============
 import pandas as pd
 import plotly.express as px
 
@@ -76,30 +80,20 @@ dataFrame1.columns=["科目","姓名","分數"]
 fig1=px.line(dataFrame1,x='科目',y='分數',color='姓名',title="plotly Express")
 st.plotly_chart(fig1)
 
+
+#===========plotly graphic_object============
 import plotly.graph_objects as go
+dataFrame = getDataFrame()
+figure = go.Figure(layout=go.Layout(title="plotly graph_objects"))
+figure.add_trace(go.Scatter(x=dataFrame.columns,
+                         y=dataFrame.loc['學生1'],
+                         mode='lines+markers',
+                         name='學生1',
+                         line=dict(color='red')                                               
+                         ))
+figure.add_trace(go.Scatter(x=dataFrame.columns,
+                         y=dataFrame.loc['學生2'],
+                         mode='lines+markers',
+                         name='學生2'))
 
-#plotly
-# Create random data with numpy
-import numpy as np
-np.random.seed(1)
-
-N = 100
-random_x = np.linspace(0, 1, N)
-random_y0 = np.random.randn(N) + 5
-random_y1 = np.random.randn(N)
-random_y2 = np.random.randn(N) - 5
-
-# Create traces
-fig = go.Figure()
-fig.add_trace(go.Scatter(x=random_x, y=random_y0,
-                    mode='lines',
-                    name='lines'))
-fig.add_trace(go.Scatter(x=random_x, y=random_y1,
-                    mode='lines+markers',
-                    name='lines+markers'))
-fig.add_trace(go.Scatter(x=random_x, y=random_y2,
-                    mode='markers', name='markers'))
-
-
-
-st.plotly_chart(fig)
+st.plotly_chart(figure)
