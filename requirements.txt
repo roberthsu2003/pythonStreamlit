@@ -4,3 +4,5 @@ pandas
 matplotlib
 plotly==5.15.0
 nbformat
+yfinance
+ffn
