@@ -18,8 +18,8 @@ def getStockNames()->pd.Series:
     code_series = pd.Series(stock_codes)
     return code_series
 
-def get_dataFrame(menu:list)->pd.DataFrame:
-    stock_data = ffn.get(menu)
+def get_dataFrame(menu:list,start_year)->pd.DataFrame:
+    stock_data = ffn.get(menu,start=start_year)
     return stock_data
 
 #多重選取
@@ -35,8 +35,14 @@ for name in options:
     names.append(name_string+".TW")
 
 dataFrame:pd.DataFrame | None = None
-if len(names) != 0:
-    dataFrame = get_dataFrame(names)
+if len(names) != 0:    
+    #start year
+    start_year = st.sidebar.selectbox("起始年份",range(2000,2023))
+    st.sidebar.write("you selected:",start_year)
+    print(start_year)
+    dataFrame = get_dataFrame(names,f"{start_year}-01-01")
     st.dataframe(dataFrame)
     st.line_chart(dataFrame)
+
+
 
