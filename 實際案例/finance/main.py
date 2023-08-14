@@ -2,6 +2,7 @@ import csv
 import pandas as pd
 import streamlit as st
 import ffn
+import matplotlib.pyplot as plt
 
 st.write("""
 # 股票交易價格
@@ -29,8 +30,10 @@ def get_dataFrame(menu:list,start_year)->pd.DataFrame:
 
 @st.cache_data
 def raname_columns_name(dataFrame:pd.DataFrame,mapping:pd.Series) -> pd.DataFrame:
-    print(dataFrame.columns.str[:4])
-    #print(mapping)
+    '''
+    欄位名稱改為中文名稱
+    '''
+    #print(dataFrame.columns.str[:4])
     ser1:pd.Series = mapping[dataFrame.columns.str[:4]]
     dataFrame.columns = ser1.values
     return dataFrame
@@ -48,17 +51,41 @@ for name in options:
     names.append(name_string+".TW")
 
 
-
-def display_Data(dataFrame:pd.DataFrame) -> None:     
+@st.cache_data
+def display_Data(dataFrame:pd.DataFrame,start_year) -> None:
+    '''
+    顯示資料
+    '''   
+    st.subheader(f'{start_year}~目前的歷史資料')  
     st.dataframe(dataFrame)
+    st.subheader(f'{start_year}~目前的線圖')
     st.line_chart(dataFrame)
+    rebase:pd.DataFrame = dataFrame.rebase()
+    st.subheader(f'{start_year}~目前,投資100美金的回報金額')
+    st.line_chart(rebase)
+    st.subheader(f'{start_year}~目前,報酬分布圖')
+    returns = dataFrame.to_returns().dropna()
+    figure = plt.figure(figsize=(10,5))
+    ax = figure.add_subplot(1,1,1)
+    returns.hist(ax=ax)
+    st.pyplot(figure)
+    perf = dataFrame.calc_stats()
+    stats = perf.stats
+    print(type(stats))
+    st.dataframe(stats)
+    
+
+
+    
+
+
  
 if len(names) != 0:
     start_year = st.sidebar.selectbox("起始年份",range(2000,2023)) #起始年份選擇
     dataFrame:pd.DataFrame= get_dataFrame(names,f"{start_year}-01-01")
     dataFrame1 = raname_columns_name(dataFrame,stockNames)
     st.sidebar.write("you selected:",start_year)
-    display_Data(dataFrame)
+    display_Data(dataFrame1,start_year)
         
 
 
