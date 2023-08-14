@@ -3,6 +3,7 @@ import pandas as pd
 import streamlit as st
 import ffn
 import matplotlib.pyplot as plt
+import plotly.express as px
 
 st.write("""
 # 股票交易價格
@@ -51,7 +52,7 @@ for name in options:
     names.append(name_string+".TW")
 
 
-@st.cache_data
+
 def display_Data(dataFrame:pd.DataFrame,start_year) -> None:
     '''
     顯示資料
@@ -64,15 +65,28 @@ def display_Data(dataFrame:pd.DataFrame,start_year) -> None:
     st.subheader(f'{start_year}~目前,投資100美金的回報金額')
     st.line_chart(rebase)
     st.subheader(f'{start_year}~目前,報酬分布圖')
+    #使用plotly express
     returns = dataFrame.to_returns().dropna()
-    figure = plt.figure(figsize=(10,5))
-    ax = figure.add_subplot(1,1,1)
-    returns.hist(ax=ax)
-    st.pyplot(figure)
+    for name in returns.columns:        
+        figure = px.histogram(returns,x=name)
+        st.plotly_chart(figure)
+    
+    #使用matplotlib figure
+    #figure = plt.figure(figsize=(10,5))
+    #ax = figure.add_subplot(1,1,1)
+    #returns.hist(ax=ax)
+    #st.pyplot(figure) 
+
+    
     perf = dataFrame.calc_stats()
     stats = perf.stats
-    print(type(stats))
-    st.dataframe(stats)
+    print(stats)
+    stats = stats.loc[['start','end','rf','total_return','cagr','max_drawdown','mtd','three_month','six_month','one_year','three_year','five_year','ten_year']]
+    #st.dataframe(stats)
+    stats.index = ["起始日期","結束日期","無風險比例","總報酬率","CAGR","最大虧損","持有1個月","持有3個月","持有6個月","持有1年","持有3年","持有5年","持有10年"]
+    styler = stats[2:].style.format(precision=3)
+    styler.format(lambda v: f'{v*100:.3f}%')
+    st.dataframe(styler,height=425)
     
 
 
