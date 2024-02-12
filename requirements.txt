@@ -1,6 +1,7 @@
 streamlit
 requests
 pandas
+numpy
 matplotlib
 plotly==5.15.0
 nbformat
