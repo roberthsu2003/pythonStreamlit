@@ -4,7 +4,7 @@
 - columns
 - expander
 
-#### sliderbar
+## sliderbar
 #### lesson9.py
 
 ```python
@@ -29,7 +29,7 @@ add_slider = st.sidebar.slider(
 
 ---
 
-#### columns
+## columns
 
 #### lesson10.py
 
@@ -53,7 +53,7 @@ with right_column:
 
 ---
 
-#### tabs
+## tabs
 #### lesson11.py
 
 ```
@@ -78,7 +78,7 @@ with tab3:
 
 ---
 
-#### expander
+## expander
 - expander不能放在其它的expander內
 
 #### lesson12.py
@@ -102,7 +102,7 @@ with st.expander("See explanation"):
 
 ---
 
-#### container
+## container
 #### lesson13.py
 
 ```
@@ -122,7 +122,7 @@ st.write("This is outside the container")
 
 ---
 
-#### empty
+## empty
 - 只可以放一個元素的容器(只要使用container(),就可以變為可放多個元素)
 - 可清除 - empty()
 - 可加入 - insert()
