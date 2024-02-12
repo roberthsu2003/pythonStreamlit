@@ -148,7 +148,6 @@ with placeholder.container():
 
 # Clear all those elements:
 #placeholder.empty()
-
 ```
 
 
