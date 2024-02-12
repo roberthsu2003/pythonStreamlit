@@ -3,6 +3,9 @@
 - sliderbar
 - columns
 - expander
+- tabs
+- container
+- empty
 
 ## sliderbar
 #### lesson9.py
