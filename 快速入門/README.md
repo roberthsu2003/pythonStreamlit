@@ -2,17 +2,25 @@
 
 ### 開發階段
 - #### 開啟右上方'Always rerun',達到及時更新
+- #### 所謂及時更新是
+	- 在開發階段,只要有更新程式碼,並儲存檔案,重新載入browser,便可以看到及時的效果
 - #### side by side(螢幕左右各開一個視窗,一個為編輯器,一個為browser)
+- #### 在streamlit 1.10.0版本,不可以直接在linux根目錄區直接執行,會出現錯誤
 
 ### 程式執行流程
 - streamlit的程式流程和一般視窗和後端程式不一樣
 - streamlit在以下2程情況會自動更新螢幕畫面(streamlit會由上而下執行所有的程式碼)
 	- app的程式碼被更新時
-	- 當使用者和工具(widgets)互動時,如使用者按下按鈕
+	- 當使用者和工具(widgets)互動時,如使用者按下按鈕,輸入文字,拉動捲動軸
 
-由於以上的特性,使用者和工具互動時,會觸發on_change 或(on_click)的事件，並執行事件的callback function，但後面的程式並還未執行
+由於以上的特性,使用者和工具互動時,會觸發on_change 或(on_click)的事件，並執行事件的callback function
 
-如果要執行大量的資料,要使用@st.cache_data decorator, 以便app有更好的執行效能。
+#### 如下圖的說明
+![](./images/pic12.png)
+
+- session state的管理變的很重要(請參考session state的管理)
+- 在0.84.0後,加入了call back的功能,session state的觀念就不重要(但所有可以和使用者互動的原件都要加入引數名稱callback)
+- 如果要執行大量的資料,要使用@st.cache_data decorator, 以便app有更好的執行效能。
 
 ### 畫面的顯示和資料的修飾
 #### 神奇的st.write()
@@ -252,7 +260,7 @@ for i in range(100):
 
 ## Caching
 - ### 解決重覆執行的效能問題
-	- 會花費長時間的自訂function,傳出的資料確是相同的
+- 會花費長時間的自訂function,傳出的資料確是相同的
 ### 說明:https://docs.streamlit.io/library/advanced-features/caching
 
 ## Pages
