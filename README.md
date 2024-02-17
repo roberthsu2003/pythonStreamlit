@@ -3,9 +3,9 @@
 ## [安裝](./安裝和執行)
 ## [快速入門](./快速入門/)
 ## [版面](./版面)
+## [session state和callback管理](./session_state_manager)
 ## [Auto-Refresh](./autorefresh)
 ## [模擬環境變數](./模擬環境變數)
-## [How to use Streamlit session states and callback functions | Make your apps remember things!](https://www.youtube.com/watch?v=5l9COMQ3acc)
 ## 實際案例
 - [各種類型圖表顯示](./實際案例/student_scores/)
 - [台幣匯率換算](./實際案例/exchange_rate/)

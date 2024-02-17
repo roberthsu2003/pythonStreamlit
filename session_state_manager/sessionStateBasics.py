@@ -1,4 +1,5 @@
-#0.84版後,callback的觀念已經加入,session_state的管理就不再這麼重要了
+
+
 import streamlit as st
 st.title("session State Basics")
 "st.session_state object:", st.session_state
