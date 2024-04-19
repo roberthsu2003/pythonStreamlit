@@ -12,6 +12,210 @@ Session state就是一個解決方案,讓每次程式每次由上而下執行時
 
 > 附註:當按下瀏覽器的重新整理時,是建立一個全新的Session。
 
+### 為何要學習session_state
+- 下面程式有問題
+
+```python
+#下面是錯誤的寫法
+#每按一次按鈕,一樣是顯示1
+#要了解原因必需要學會session_state
+import streamlit as st
+
+st.title('Counter Example')
+count = 0
+
+increment = st.button('Increment')
+if increment:
+    count += 1
+
+st.write('Count = ', count)
+```
+
+##### 初始化session_state
+
+```python
+import streamlit as st
+
+# Check if 'key' already exists in session_state
+# If not, then initialize it
+if 'key' not in st.session_state:
+    st.session_state['key'] = 'value'
+
+# Session State also supports the attribute based syntax
+if 'key' not in st.session_state:
+    st.session_state.key = 'value'
+```
+
+##### 讀取和更新session_state
+
+```python
+import streamlit as st
+
+if 'key' not in st.session_state:
+    st.session_state['key'] = 'value'
+
+# Reads
+st.write(st.session_state.key)
+
+# Outputs: value
+```
+
+
+```python
+if 'key' not in st.session_state:
+    st.session_state['key'] = 'value'
+
+# Updates
+st.session_state.key = 'value2'     # Attribute API
+st.session_state['key'] = 'value2'  # Dictionary like API
+```
+
+##### 沒有初始化session_state,就取出會throw exception
+
+```python
+mport streamlit as st
+
+st.write(st.session_state['value'])
+
+# Throws an exception!
+```
+
+##### 增加session state(計數器的標準寫法)
+
+```python
+import streamlit as st
+
+st.title('Counter Example')
+if 'count' not in st.session_state:
+    st.session_state.count = 0
+
+increment = st.button('Increment')
+if increment:
+    st.session_state.count += 1
+
+st.write('Count = ', st.session_state.count)
+```
+
+##### Session State 和 Callback
+
+```python
+import streamlit as st
+
+st.title('Counter Example using Callbacks')
+if 'count' not in st.session_state:
+    st.session_state.count = 0
+
+def increment_counter():
+    st.session_state.count += 1
+
+st.button('Increment', on_click=increment_counter)
+
+st.write('Count = ', st.session_state.count)
+```
+
+#### Callback 和 args,kwargs
+
+```python
+import streamlit as st
+
+st.title('Counter Example using Callbacks with args')
+if 'count' not in st.session_state:
+    st.session_state.count = 0
+
+increment_value = st.number_input('Enter a value', value=0, step=1)
+
+def increment_counter(increment_value):
+    st.session_state.count += increment_value
+
+increment = st.button('Increment', on_click=increment_counter,
+    args=(increment_value, ))
+
+st.write('Count = ', st.session_state.count)
+```
+
+```
+import streamlit as st
+
+st.title('Counter Example using Callbacks with kwargs')
+if 'count' not in st.session_state:
+    st.session_state.count = 0
+
+def increment_counter(increment_value=0):
+    st.session_state.count += increment_value
+
+def decrement_counter(decrement_value=0):
+    st.session_state.count -= decrement_value
+
+st.button('Increment', on_click=increment_counter,
+	kwargs=dict(increment_value=5))
+
+st.button('Decrement', on_click=decrement_counter,
+	kwargs=dict(decrement_value=1))
+
+st.write('Count = ', st.session_state.count)
+```
+
+
+##### Forms and Callback
+
+```python
+import streamlit as st
+import datetime
+
+st.title('Counter Example')
+if 'count' not in st.session_state:
+    st.session_state.count = 0
+    st.session_state.last_updated = datetime.time(0,0)
+
+def update_counter():
+    st.session_state.count += st.session_state.increment_value
+    st.session_state.last_updated = st.session_state.update_time
+
+with st.form(key='my_form'):
+    st.time_input(label='Enter the time', value=datetime.datetime.now().time(), key='update_time')
+    st.number_input('Enter a value', value=0, step=1, key='increment_value')
+    submit = st.form_submit_button(label='Update', on_click=update_counter)
+
+st.write('Current Count = ', st.session_state.count)
+st.write('Last Updated = ', st.session_state.last_updated)
+```
+
+#### Advanced concepts
+
+##### Session State and Widget State association
+
+```python
+import streamlit as st
+
+if "celsius" not in st.session_state:
+    # set the initial default value of the slider widget
+    st.session_state.celsius = 50.0
+
+st.slider(
+    "Temperature in Celsius",
+    min_value=-100.0,
+    max_value=100.0,
+    key="celsius"
+)
+
+# This will get the value of the slider widget
+st.write(st.session_state.celsius)
+```
+
+
+##### 重要,st.button,st.file_uploader, 不可以使用Session API 設定default value
+
+```python
+#會出錯
+import streamlit as st
+
+if 'my_button' not in st.session_state:
+    st.session_state.my_button = True
+    # Streamlit will raise an Exception on trying to set the state of button
+
+st.button('Submit', key='my_button')
+```
+
 
 ### 範例1(1session_state_basics.py):
 
