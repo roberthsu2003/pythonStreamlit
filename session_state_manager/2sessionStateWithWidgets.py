@@ -12,7 +12,10 @@ st.write(st.session_state)
 col1, buff, col2 = st.columns([1,0.5,3]) #columns已經在此建立container
 
 #---------這一段最後寫------------
+#-----下面的print()是驗証,當使用者和input widge互動時,程式會由上而下重新執行一次
+print("我的下面是button")
 next = st.button("Next optin") #button第一次始始化,next初設定為false,按一下,就更改為true
+print(next)
 
 if next:
     if st.session_state["radio_option"] == 'a':

@@ -10,7 +10,7 @@ Session state就是一個解決方案,讓每次程式每次由上而下執行時
 
 ![](./images/pic1.png)
 
-> 附註:當按下瀏覽器的重新整理時,是建立一個全新的Session。當使用者互動時,將現有的Session清空,程式由上而下再執行一次。
+> 附註:當按下瀏覽器的重新整理時,是建立一個全新的Session。
 
 
 ### 範例1(1session_state_basics.py):

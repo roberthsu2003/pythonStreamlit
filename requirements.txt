@@ -7,5 +7,5 @@ plotly==5.15.0
 nbformat
 yfinance
 ffn
-streamlit-autorefreshaut
+streamlit-autorefresh
 python-dotenv
