@@ -18,5 +18,11 @@
 - [台幣匯率換算](./實際案例/exchange_rate/)
 - [台灣天氣預測](./實際案例/taiwan_weather/)
 - [股票資訊](./實際案例/finance/)
-- [(y=2x-1)機器學習](./實際案例/tensorflow1/)
+---
+**機器學習**
+- [(y=2x-1)線性迴歸](./實際案例/tensorflow1/)
+- [Fashion MNIST-上傳圖片](./實際案例/tensorflow2/)
+- [Fashion MNIST-5x5-Grid](./實際案例/tensorflow3/)
+- [Fashion MNIST-5x5-Grid](./實際案例/tensorflow4/)
+	- 使用延伸套件`‌streamlit-clickable-images`
 ## [官方專業Demo](https://github.com/streamlit)
