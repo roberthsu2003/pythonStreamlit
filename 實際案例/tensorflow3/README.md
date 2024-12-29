@@ -60,7 +60,7 @@ convert_to_tflite(model,tflite_model_path)
 
 ## 2. 載入模型和建立介面
 
-- 專案人必需有此檔MNIST_fasion.tflite
+- 專案內必需有此檔MNIST_fasion.tflite
 
 ![](./images/pic1.png)
 
