@@ -2,6 +2,7 @@
 - 使用擴充套件streamlit_clickable_images
 ‌
 ## 1. 訓練模型並建立tflite檔(create_model.py)
+- 必需產生MNIST_fasion.tflite
 
 ```python
 import tensorflow as tf
@@ -58,6 +59,7 @@ convert_to_tflite(model,tflite_model_path)
 ```
 
 ## 2. 載入模型並建立介面(interface.py)
+- 專案人必需有此檔MNIST_fasion.tflite
 
 ![](./images/pic1.png)
 

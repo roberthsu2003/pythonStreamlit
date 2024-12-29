@@ -1,6 +1,7 @@
 # Fashion MNIST - 5x5 grid 介面
 
 ## 1. 訓練模型並建立tflite檔(create_model.py)
+- 必需產生MNIST_fasion.tflite
 
 ```python
 import tensorflow as tf
@@ -57,6 +58,10 @@ convert_to_tflite(model,tflite_model_path)
 ```
 
 
+## 2. 載入模型和建立介面
+
+- 專案人必需有此檔MNIST_fasion.tflite
+
 ![](./images/pic1.png)
 
 ```python
@@ -66,22 +71,45 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Class names for Fashion MNIST
-class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
-               'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
+class_names = ['T恤/上衣', '褲子', '毛衣', '連衣裙', '外套',
+                '涼鞋', '襯衫', '運動鞋', '包包', 'ankle boot(踝靴)']
+def load_and_use_tflite(tflite_model_path:str):
+    """
+    載入tflite模型和傳出預測function
+    Args
+        tflite_mode_path(str):模型的路徑
+    """
+    #載入模型
+    interpreter = tf.lite.Interpreter(model_path=tflite_model_path)
+    
+    #為模型配置記憶體
+    interpreter.allocate_tensors()
 
-def load_model():
-    """Load the trained model"""
-    model = tf.keras.Sequential([
-        tf.keras.layers.Flatten(input_shape=(28, 28)),
-        tf.keras.layers.Dense(128, activation='relu'),
-        tf.keras.layers.Dense(10, activation='softmax')
-    ])
-    
-    model.compile(optimizer='adam',
-                 loss='sparse_categorical_crossentropy',
-                 metrics=['accuracy'])
-    
-    return model
+    #取得輸入和輸出的資訊
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
+
+    print(input_details)
+    print(output_details)
+
+    #使用tflite模型預測的function
+    def predict(input_data):
+        #input_data的ndarray的type是int32,轉換型別
+        input_data = input_data.astype(np.float32)
+        #準備input data
+        input_data = input_data.reshape(input_details[0]['shape'])
+        
+        #將input_tensor指定給模型輸入(使用index編號)
+        interpreter.set_tensor(input_details[0]['index'],input_data)
+        
+        #執行預測
+        interpreter.invoke()
+
+        #取得輸出的tensor
+        output_data = interpreter.get_tensor(output_details[0]['index'])
+        return output_data
+
+    return predict
 
 def create_image_grid(images, labels, selected_idx=None):
     """Create a 5x5 grid of images with selection highlight"""
@@ -101,18 +129,28 @@ def create_image_grid(images, labels, selected_idx=None):
     return fig
 
 def main():
-    st.title("Fashion MNIST Classifier")
-    st.write("Select an image from the grid to see its prediction!")
+    st.title("Fashion MNIST 分類")
+    st.write("選取任一圖片,檢視:red-background[預測狀況]")
 
     # Load the model
-    model = load_model()
+    tflite_path = 'MNIST_fasion.tflite'
+    predict = load_and_use_tflite(tflite_path)
 
     # Load Fashion MNIST dataset
     (_, _), (test_images, test_labels) = tf.keras.datasets.fashion_mnist.load_data()
     
     # Select first 25 test images
-    display_images = test_images[:25]
-    display_labels = test_labels[:25]
+    # 隨機選擇25個不重複的索引 (從0到9999)
+    # 初始化 session_state 中的隨機索引,因為初始化時只要執行一次
+    if 'random_indices' not in st.session_state:
+        st.session_state['random_indices'] = np.random.choice(len(test_images), size=25, replace=False) 
+
+    # Load Fashion MNIST dataset
+    (_, _), (test_images, test_labels) = tf.keras.datasets.fashion_mnist.load_data()
+    
+    # 使用這些索引獲取圖片和標籤
+    display_images = test_images[st.session_state.random_indices]
+    display_labels = test_labels[st.session_state.random_indices]
 
     # Create columns for layout
     col1, col2 = st.columns([2, 1])
@@ -137,22 +175,22 @@ def main():
     # Display prediction in the second column
     with col2:
         if st.session_state.selected_idx is not None:
-            st.write("### Selected Image")
+            st.write("## 選擇的圖片")
             selected_image = display_images[st.session_state.selected_idx]
             st.image(selected_image, caption=f'Image {st.session_state.selected_idx + 1}', width=200)
             
             # Preprocess and predict
             processed_image = selected_image / 255.0
-            prediction = model.predict(processed_image.reshape(1, 28, 28))
+            prediction = predict(processed_image)
             predicted_class = np.argmax(prediction)
             actual_class = display_labels[st.session_state.selected_idx]
             
-            st.write("### Prediction Results")
-            st.write(f"Predicted: **{class_names[predicted_class]}**")
-            st.write(f"Actual: **{class_names[actual_class]}**")
+            st.write("### 預測結果")
+            st.write(f"預測: **{class_names[predicted_class]}**")
+            st.write(f"實際: **{class_names[actual_class]}**")
             
             # Show prediction probabilities
-            st.write("### Confidence Scores")
+            st.write("### 信心分數")
             for i, prob in enumerate(prediction[0]):
                 st.progress(float(prob))
                 st.write(f"{class_names[i]}: {prob*100:.1f}%")
