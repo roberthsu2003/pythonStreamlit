@@ -21,7 +21,6 @@
 ---
 **機器學習**
 - [(y=2x-1)線性迴歸](./實際案例/tensorflow1/)
-- [Fashion MNIST-上傳圖片](./實際案例/tensorflow2/)
 - [Fashion MNIST-5x5-Grid](./實際案例/tensorflow3/)
 - [Fashion MNIST-5x5-Grid](./實際案例/tensorflow4/)
 	- 使用延伸套件`‌streamlit-clickable-images`
