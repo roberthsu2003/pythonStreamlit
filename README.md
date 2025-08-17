@@ -12,6 +12,7 @@
 ## [版面](./版面)
 ## [session state和callback管理](./session_state_manager)
 ## [Auto-Refresh](./autorefresh)
+## [Caching](./caching)
 ## [模擬環境變數](./模擬環境變數)
 ## 實際案例
 - [各種類型圖表顯示](./實際案例/student_scores/)
